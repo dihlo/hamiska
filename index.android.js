@@ -15,10 +15,17 @@ import {
   ScrollView
 } from 'react-native';
 
-class Greeting extends Component {
+class CardLine extends Component {
   render() {
     return (
-      <Text>Hello {this.props.name}!</Text>
+      <View style={styles.cardline}>
+      	<Image style={styles.card} source={require('./components/img/Blizkon.png')}></Image>
+      	<Image style={styles.card} source={require('./components/img/Blizkon.png')}></Image>
+      	<Image style={styles.card} source={require('./components/img/Blizkon.png')}></Image>
+      	<Image style={styles.card} source={require('./components/img/Blizkon.png')}></Image>
+      	<Image style={styles.card} source={require('./components/img/Blizkon.png')}></Image>
+      	<Image style={styles.card} source={require('./components/img/Blizkon.png')}></Image>
+      </View>
     );
   }
 }
@@ -52,12 +59,22 @@ export default class AwesomeProject extends Component {
       uri: 'https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg'
     };
     return (
-    	<Image source={require('./components/img/bg.jpg')} style={styles.container}>
+    	<View style={styles.container}>
     		<View style={styles.hp}>
-    			<Text style={{color: 'red'}}>15 HP</Text>
-    			<Text>HP</Text>    			
+    			<Text style={{flex: 1, color: 'red'}}>15 HP</Text>    			   			
     		</View>
-    	</Image>
+    		<View style={{flex: 1, justifyContent: 'center', alignItems: 'center',}}>
+    			<CardLine/> 
+    			<CardLine/>
+    			<CardLine/> 
+    			<CardLine/> 
+    			<CardLine/> 
+    			<CardLine/>     			    			   	            			
+    		</View>
+    		<View style={styles.hp}>
+    			<Text style={{flex: 1, color: 'red'}}>15 HP</Text>    			   			
+    		</View>
+    	</View>
     );
   }
 }
@@ -66,13 +83,25 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     position: 'relative',
-    resizeMode: 'stretch',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   hp: {
   	alignItems: 'center',
   	flexDirection: 'row',
   },
-
+  cardline: {
+  	flex: 2,
+  	flexDirection: 'row',
+  	justifyContent: 'space-between',
+  	backgroundColor: 'black',
+  },
+  card: {
+  	height: 50,
+  	width: 70,
+  	resizeMode: 'stretch',
+  },
 });
 
 AppRegistry.registerComponent('AwesomeProject', () => AwesomeProject);

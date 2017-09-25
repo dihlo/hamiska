@@ -12,39 +12,38 @@ import {
   View,
   Image,
   TextInput,
-  ScrollView
+  ScrollView,
+  Animated,
+  Dimensions,
+  Alert,
+  TouchableHighlight
 } from 'react-native';
+import FlipCard from 'react-native-flip-card';
 
 class CardLine extends Component {
   render() {
     return (
       <View style={styles.cardline}>
-      	<Image style={styles.card} source={require('./components/img/Blizkon.png')}></Image>
-      	<Image style={styles.card} source={require('./components/img/Blizkon.png')}></Image>
-      	<Image style={styles.card} source={require('./components/img/Blizkon.png')}></Image>
-      	<Image style={styles.card} source={require('./components/img/Blizkon.png')}></Image>
-      	<Image style={styles.card} source={require('./components/img/Blizkon.png')}></Image>
-      	<Image style={styles.card} source={require('./components/img/Blizkon.png')}></Image>
+		<FlipCard 
+		  friction={6}
+		  perspective={1000}
+		  flipHorizontal={true}
+		  flipVertical={true}
+		  flip={false}
+		  clickable={true}
+		  onFlipEnd={(isFlipEnd)=>{console.log('isFlipEnd', isFlipEnd)}}
+		>
+		  {/* Face Side */}
+		  <View style={styles.card}>
+		    <Text>The Face</Text>
+		  </View>
+		  {/* Back Side */}
+		  <View style={styles.card}>
+		    <Text>The Back</Text>
+		  </View>
+		</FlipCard>
+		
       </View>
-    );
-  }
-}
-
-class Blink extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {showText: true};
-
-    // Toggle the state every second
-    setInterval(() => {
-      this.setState({ showText: !this.state.showText });
-    }, 1000);
-  }
-
-  render() {
-    let display = this.state.showText ? this.props.text : ' ';
-    return (
-      <Text>{display}</Text>
     );
   }
 }
@@ -52,55 +51,75 @@ class Blink extends Component {
 export default class AwesomeProject extends Component {
 	constructor(props) {
     super(props);
+    this.animatedValue = new Animated.Value(0);
+    this.test = this.test.bind(this)
     this.state = {text: ''};
   }
   render() {
-  	let pic = {
-      uri: 'https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg'
-    };
+  const rotateY = this.animatedValue.interpolate({
+    inputRange: [0, 0.5, 1],
+    outputRange: ['0deg', '180deg', '0deg']
+  });
     return (
     	<View style={styles.container}>
     		<View style={styles.hp}>
-    			<Text style={{flex: 1, color: 'red'}}>15 HP</Text>    			   			
+    			<Text style={{color: 'red'}}>15 HP</Text>    			   			
     		</View>
-    		<View style={{flex: 1, justifyContent: 'center', alignItems: 'center',}}>
+    		<View style={{flex: 4}}>
     			<CardLine/> 
     			<CardLine/>
     			<CardLine/> 
     			<CardLine/> 
-    			<CardLine/> 
-    			<CardLine/>     			    			   	            			
+    			<CardLine/>             			
     		</View>
     		<View style={styles.hp}>
-    			<Text style={{flex: 1, color: 'red'}}>15 HP</Text>    			   			
+    			<Text style={{color: 'red'}}>15 HP</Text>    			   			
     		</View>
     	</View>
     );
+  }
+
+  test() {
+  	Alert.alert('You tapped the button!');
+  }
+
+  animate() {
+  	console.log('OK Pressed');
+	  this.animatedValue.setValue(0);
+	  Animated.timing(
+	    this.animatedValue,
+	    {
+	      toValue: 1,
+	      duration: 2000,
+	      easing: Easing.linear
+	    }
+	  ).start(() => this.reverseCard())
   }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    position: 'relative',
     flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   hp: {
+  	flex: 1,
   	alignItems: 'center',
   	flexDirection: 'row',
   },
   cardline: {
-  	flex: 2,
+  	flex: 1,
   	flexDirection: 'row',
-  	justifyContent: 'space-between',
+  	justifyContent: 'space-around',
   	backgroundColor: 'black',
+  	alignItems: 'center',
   },
   card: {
-  	height: 50,
-  	width: 70,
-  	resizeMode: 'stretch',
+  	transform: [{rotateY: '0 deg'}],
+  	height: 60,
+  	width: 45,
+  	backgroundColor: 'red',
+  	zIndex: 1000,
   },
 });
 
